@@ -1,0 +1,23 @@
+case_id,date,category,severity,stakeholder_tier,value_at_risk,description,resolution,outcome,escalated,escalated_to,hours_to_resolve,satisfaction
+PRJ-001,2026-08-06,schedule_slippage,medium,standard,120000,Sprint backlog slipped by three weeks because of late requirement sign off and the milestone date is at risk.,re_baseline_plan,resolved,no,,120,3
+PRJ-002,2026-09-08,schedule_slippage,high,key,400000,Integration milestone delayed by a month due to environment readiness and the client wants a recovery plan.,add_resources_surge,escalated_resolved,yes,PMO Delivery Lead,80,3
+PRJ-003,2026-10-13,schedule_slippage,high,strategic,1500000,Go live date for phase one is slipping again and the client sponsor is unhappy with repeated delays.,executive_sponsor_meeting,escalated_resolved,yes,Delivery Director,60,2
+PRJ-004,2026-08-12,scope_creep,medium,standard,80000,Client keeps adding new reports outside the agreed scope without a change request.,change_request_negotiation,resolved,no,,90,4
+PRJ-005,2026-09-16,scope_creep,high,key,350000,Scope has grown by thirty percent through verbal approvals and the team works unpaid extra hours.,change_request_negotiation,escalated_resolved,yes,Engagement Manager,110,3
+PRJ-006,2026-10-08,scope_creep,medium,key,200000,Stakeholders request additional integrations late in the project and want them in the same release.,descoping_and_phased_delivery,resolved,no,,70,3
+PRJ-007,2026-08-18,resource_shortage,medium,standard,60000,Two senior developers left the project and the remaining team cannot meet the sprint commitments.,add_resources_surge,resolved,no,,60,4
+PRJ-008,2026-09-23,resource_shortage,high,key,500000,Key architect pulled to another program and critical design work is blocked.,add_resources_surge,escalated_resolved,yes,Resource Management Office,72,3
+PRJ-009,2026-10-15,resource_shortage,medium,standard,90000,Testing team understaffed during release week and regression testing is incomplete.,add_resources_surge,reopened,no,,48,3
+PRJ-010,2026-09-03,vendor_delay,medium,standard,70000,Third party licence delivery arrived two weeks late and blocked the environment setup.,re_baseline_plan,resolved,no,,100,3
+PRJ-011,2026-10-06,vendor_delay,high,key,600000,Vendor API for the payments integration is still not delivered and the vendor keeps missing agreed dates.,vendor_penalty_and_alternate_sourcing,reopened,no,,90,2
+PRJ-012,2026-10-10,vendor_delay,high,key,650000,Payments API from the vendor is delayed again and blocking integration testing across teams.,vendor_penalty_and_alternate_sourcing,escalated_resolved,yes,Procurement and Vendor Management,85,3
+PRJ-013,2026-10-16,vendor_delay,high,strategic,900000,Vendor missed the payments API delivery date for the third time and the integration milestone is blocked.,vendor_penalty_and_alternate_sourcing,escalated_resolved,yes,Procurement and Vendor Management,60,3
+PRJ-014,2026-08-24,quality_defects,medium,standard,45000,High number of open critical defects found in user acceptance testing.,defect_burn_down_sprint,resolved,no,,50,4
+PRJ-015,2026-09-26,quality_defects,high,strategic,800000,Production release had major defects in billing calculation and the client requested root cause analysis.,defect_burn_down_sprint,escalated_resolved,yes,Quality Assurance Head,95,3
+PRJ-016,2026-10-19,quality_defects,medium,standard,30000,Recurring defects in the reporting module after each release.,risk_mitigation_workshop,resolved,no,,40,4
+PRJ-017,2026-08-16,budget_overrun,medium,key,150000,Project forecast shows a ten percent budget overrun due to extended testing effort.,change_request_negotiation,resolved,no,,100,3
+PRJ-018,2026-09-18,budget_overrun,high,key,700000,Cost forecast is thirty percent above budget and the client has not agreed to additional funding.,executive_sponsor_meeting,escalated_resolved,yes,Portfolio Director,120,3
+PRJ-019,2026-10-11,budget_overrun,high,strategic,1200000,Budget overrun raised by finance because change requests were never billed.,re_baseline_plan,escalated_resolved,yes,Portfolio Director,80,2
+PRJ-020,2026-08-29,stakeholder_conflict,medium,standard,0,Product owner and technical lead disagree on priorities and decisions keep changing.,risk_mitigation_workshop,resolved,no,,40,3
+PRJ-021,2026-10-02,stakeholder_conflict,high,key,400000,Two client business units give conflicting requirements and the steering committee is deadlocked.,executive_sponsor_meeting,escalated_resolved,yes,Steering Committee Sponsor,60,2
+PRJ-022,2026-10-18,stakeholder_conflict,medium,key,100000,Client stakeholder blames the team publicly in meetings and trust is declining.,risk_mitigation_workshop,reopened,no,,36,3

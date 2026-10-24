@@ -1,4 +1,3 @@
-
 # Copyright © 2023-2026 Cognizant Technology Solutions Corp, www.cognizant.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +20,14 @@
 {
     # Currently we list each hocon file we want to serve as a key with a boolean value.
     # Eventually we might have a dictionary value with server specifications for each.
+
+    # ======================= HACKATHON ENTRIES (added) =======================
+    # EscalateIQ: universal escalation-decision engine (complaints, incidents, project delivery, ...).
+    "escalation_iq.hocon": true,
+    # MigrationBoard: AI architecture review board for regulated-bank cloud migration.
+    # Remove this line if you did not copy migration_board.hocon into your registries folder.
+    "migration_board.hocon": true,
+    # ==========================================================================
 
     # Simple manifest entry where the key is the name of the hocon file with the
     # agent specification in it, and the value is a boolean as to whether or not
@@ -100,28 +107,9 @@
     "assess_failure.hocon": true,
     "chat_mock_llm_echo.hocon": true,
 
-    # STOP AND READ: YOU PROBABLY DON'T WANT TO ADD YOUR .hocon FILE HERE.
-    #
-    # The agent network .hocon files above are examples specific to the neuro-san library.
-    #
-    # It would be an Easy thing to do to add your own agent network's .hocon file to the
-    # list above to get started, but 99% of the time it is not the Right, Simple thing to do
-    # to make a commit with your agent listed here.
-    # Why? Because many agent networks drag in dependencies for their CodedTools,
-    # and we are continually trying to keep neuro-san a lean library.
-    #
-    # We are quite sure your agent is superlative and special... to you.
-    # If your agent really is the 1% of cases which is so exemplary that we need to show it
-    # off to the world, you will need to be talking to the neuro-san team to make it
-    # the exemplary case you perhaps unintentionally end up meaning it to be by adding
-    # it here, in the neuro-san repo.
-    #
-    # The Right thing to do is to start your own repo with your own registries/ directory,
-    # with your own manifest.hocon file for your own agent network .hocon file projects,
-    # and your own coded_tools directory for those agents.  And when you do that,
-    # you will delete this set of comments, because you will have free reign in your own repo.
-    # After all: Stallions must run, and run free.
-    #
+    # The upstream neuro-san repo asks contributors to keep their own agent networks in their own repo
+    # (with their own registries/ directory, manifest and coded_tools). For a hackathon fork it is fine
+    # to list them here, as done in the HACKATHON ENTRIES block above.
     # Use the AGENT_MANIFEST_FILE and AGENT_TOOL_PATH env vars to direct a generic neuro-san
     # server to your own repo's agents and CodedTools, respectively.
     #

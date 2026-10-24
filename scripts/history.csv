@@ -1,0 +1,27 @@
+case_id,date,category,severity,stakeholder_tier,value_at_risk,description,resolution,outcome,escalated,escalated_to,hours_to_resolve,satisfaction
+CMP-001,2026-08-14,billing_error,medium,standard,85,Customer was charged a duplicate monthly account fee and asks for a refund of the extra charge.,fee_reversal_and_refund,resolved,no,,6,4
+CMP-002,2026-09-01,billing_error,high,key,1200,Card statement shows the same merchant payment posted twice and the amount is over one thousand.,temporary_credit_pending_investigation,escalated_resolved,yes,Billing Disputes Team,30,3
+CMP-003,2026-09-20,billing_error,low,standard,25,Customer disputes an incorrect late payment fee after paying on time.,fee_reversal_and_refund,resolved,no,,4,5
+CMP-004,2026-10-11,billing_error,medium,standard,300,Interest charged on loan statement does not match the agreed rate and it was already corrected once.,correct_record_and_reissue,reopened,no,,20,2
+CMP-005,2026-08-04,fraud_unauthorized_transaction,high,standard,2400,Customer reports unrecognised overseas card transactions and asks for the card to be blocked.,block_secure_and_reissue,escalated_resolved,yes,Fraud Investigation Unit,48,4
+CMP-006,2026-08-29,fraud_unauthorized_transaction,critical,key,15000,Online banking account takeover with multiple transfers to unknown beneficiaries draining the savings.,temporary_credit_pending_investigation,escalated_resolved,yes,Fraud Investigation Unit,72,3
+CMP-007,2026-09-24,fraud_unauthorized_transaction,medium,standard,180,Small unauthorised subscription payment appeared on the debit card after a phishing sms.,block_secure_and_reissue,resolved,no,,10,5
+CMP-008,2026-10-14,fraud_unauthorized_transaction,high,standard,3200,Customer says the card was cloned at an ATM and several cash withdrawals were made.,temporary_credit_pending_investigation,escalated_resolved,yes,Fraud Investigation Unit,40,3
+CMP-009,2026-07-30,service_outage,medium,standard,0,Internet banking website was down for an hour and the customer could not pay a bill.,technical_workaround_and_followup,resolved,no,,8,4
+CMP-010,2026-10-04,service_outage,high,standard,0,Mobile banking app login fails with an error after the latest update and the customer cannot access the account.,technical_workaround_and_followup,reopened,no,,36,2
+CMP-011,2026-10-08,service_outage,high,key,0,Mobile app crashes on login after the update and fingerprint login no longer works.,technical_workaround_and_followup,escalated_resolved,yes,Digital Support Engineering,30,3
+CMP-012,2026-10-12,service_outage,high,standard,0,App login keeps failing with a verification error since the update and the customer is locked out.,technical_workaround_and_followup,reopened,no,,28,2
+CMP-013,2026-10-17,service_outage,high,standard,0,After the app update users cannot log in to mobile banking and the one time password never arrives.,manager_callback_and_service_recovery,escalated_resolved,yes,Digital Support Engineering,20,3
+CMP-014,2026-08-09,loan_and_mortgage,medium,standard,5000,Mortgage application delayed for weeks because documents were lost and the customer asks to speed it up.,process_exception_approval,escalated_resolved,yes,Lending Operations,120,3
+CMP-015,2026-09-09,loan_and_mortgage,high,key,40000,Loan disbursement did not happen on the promised date and the customer missed a property purchase deadline.,manager_callback_and_service_recovery,escalated_resolved,yes,Lending Operations,96,4
+CMP-016,2026-10-01,loan_and_mortgage,low,standard,0,Customer received a wrong loan balance in the annual statement.,correct_record_and_reissue,resolved,no,,12,4
+CMP-017,2026-10-16,loan_and_mortgage,medium,standard,800,Prepayment of the home loan is not reflected in the outstanding amount.,correct_record_and_reissue,resolved,no,,24,3
+CMP-018,2026-08-24,account_access,medium,standard,0,Customer account is locked after several wrong password attempts and cannot reset it online.,technical_workaround_and_followup,resolved,no,,10,4
+CMP-019,2026-09-15,account_access,high,key,25000,Business account frozen after a compliance review with no explanation and salaries cannot be paid.,block_secure_and_reissue,escalated_resolved,yes,Account Services Specialists,26,3
+CMP-020,2026-10-09,account_access,low,standard,0,Customer cannot update the mobile number because the verification code is not received.,technical_workaround_and_followup,resolved,no,,6,5
+CMP-021,2026-08-18,staff_conduct,medium,standard,0,Customer complains a branch employee was rude and ignored the queue token.,manager_callback_and_service_recovery,resolved,no,,24,3
+CMP-022,2026-09-12,staff_conduct,high,key,0,An employee shared the customer's account details with a relative without consent.,compensation_package,escalated_resolved,yes,Customer Relations Management,72,3
+CMP-023,2026-10-06,staff_conduct,low,standard,0,Long waiting time at the branch and nobody explained the delay.,apology_and_goodwill_credit,resolved,no,,8,4
+CMP-024,2026-08-26,fees_and_charges,low,standard,40,Customer was charged an annual card fee despite a lifetime free offer.,fee_reversal_and_refund,resolved,no,,5,5
+CMP-025,2026-09-22,fees_and_charges,medium,key,650,Several overdraft penalty fees were applied although the salary credit was only a day late.,fee_reversal_and_refund,resolved,no,,18,4
+CMP-026,2026-10-15,fees_and_charges,medium,standard,150,Foreign currency markup fee is higher than quoted at account opening.,process_exception_approval,reopened,no,,22,2

@@ -1,0 +1,532 @@
+{
+  "domain": "it_incidents",
+  "display_name": "IT Incident Escalation (production operations)",
+  "case_noun": "incident",
+  "description": "Production incidents: outages, performance, security, data, access, deployment and network issues.",
+  "default_team": "Service Delivery Manager",
+  "severity_levels": {
+    "low": "Minor inconvenience, no financial or compliance exposure.",
+    "medium": "Noticeable impact on one stakeholder, workaround available.",
+    "high": "Significant impact, no easy workaround, or several stakeholders affected.",
+    "critical": "Severe impact, major financial, safety, security or compliance exposure."
+  },
+  "taxonomy": {
+    "categories": {
+      "production_outage": {
+        "business_area": "Platform",
+        "team": "SRE On-Call",
+        "regulated": false,
+        "keywords": [
+          "down",
+          "outage",
+          "crash",
+          "failing",
+          "unavailable",
+          "region",
+          "pods"
+        ],
+        "guidance": "Critical for tier-0 services or full outages."
+      },
+      "performance_degradation": {
+        "business_area": "Application",
+        "team": "App Support L3",
+        "regulated": false,
+        "keywords": [
+          "slow",
+          "latency",
+          "timeout",
+          "response",
+          "queries",
+          "error"
+        ],
+        "guidance": "High when customers abandon transactions."
+      },
+      "security_incident": {
+        "business_area": "Security",
+        "team": "SOC Incident Response",
+        "regulated": true,
+        "keywords": [
+          "suspicious",
+          "malware",
+          "phishing",
+          "credential",
+          "breach",
+          "login"
+        ],
+        "guidance": "At least high; critical when credentials or production access are exposed."
+      },
+      "data_loss_or_corruption": {
+        "business_area": "Data",
+        "team": "Database Reliability",
+        "regulated": true,
+        "keywords": [
+          "corruption",
+          "overwrote",
+          "missing",
+          "records",
+          "duplicate",
+          "backup"
+        ],
+        "guidance": "High or critical when customer data is lost."
+      },
+      "access_provisioning": {
+        "business_area": "Identity",
+        "team": "IAM Operations",
+        "regulated": false,
+        "keywords": [
+          "access",
+          "permission",
+          "sso",
+          "expired",
+          "account",
+          "contractor"
+        ],
+        "guidance": "Usually low or medium."
+      },
+      "deployment_failure": {
+        "business_area": "DevOps",
+        "team": "Release Engineering",
+        "regulated": false,
+        "keywords": [
+          "deployment",
+          "release",
+          "pipeline",
+          "migration",
+          "rollback",
+          "configuration"
+        ],
+        "guidance": "High when production is affected."
+      },
+      "network_connectivity": {
+        "business_area": "Network",
+        "team": "Network Operations",
+        "regulated": false,
+        "keywords": [
+          "vpn",
+          "network",
+          "packet",
+          "dns",
+          "unreachable",
+          "tunnel"
+        ],
+        "guidance": "High when a data centre or branch link is down."
+      }
+    }
+  },
+  "priority": {
+    "severity_points": {
+      "low": 1,
+      "medium": 2,
+      "high": 3,
+      "critical": 4
+    },
+    "impact_rules": [
+      {
+        "label": "strategic stakeholder",
+        "points": 2,
+        "when": [
+          {
+            "field": "stakeholder_tier",
+            "op": "==",
+            "value": "strategic"
+          }
+        ]
+      },
+      {
+        "label": "key stakeholder",
+        "points": 1,
+        "when": [
+          {
+            "field": "stakeholder_tier",
+            "op": "==",
+            "value": "key"
+          }
+        ]
+      },
+      {
+        "label": "very high value at risk",
+        "points": 2,
+        "when": [
+          {
+            "field": "value_at_risk",
+            "op": ">=",
+            "value": 50000
+          }
+        ]
+      },
+      {
+        "label": "high value at risk",
+        "points": 1,
+        "when": [
+          {
+            "field": "value_at_risk",
+            "op": ">=",
+            "value": 5000
+          },
+          {
+            "field": "value_at_risk",
+            "op": "<",
+            "value": 50000
+          }
+        ]
+      },
+      {
+        "label": "regulatory exposure",
+        "points": 1,
+        "when": [
+          {
+            "field": "regulated",
+            "op": "==",
+            "value": true
+          }
+        ]
+      },
+      {
+        "label": "legal or public exposure",
+        "points": 2,
+        "when": [
+          {
+            "field": "legal_or_media_threat",
+            "op": "==",
+            "value": true
+          }
+        ]
+      },
+      {
+        "label": "safety, security or data risk",
+        "points": 2,
+        "when": [
+          {
+            "field": "safety_or_data_risk",
+            "op": "==",
+            "value": true
+          }
+        ]
+      },
+      {
+        "label": "business pressure is very high",
+        "points": 1,
+        "when": [
+          {
+            "field": "frustration_level",
+            "op": "==",
+            "value": "high"
+          }
+        ]
+      }
+    ],
+    "thresholds": {
+      "P1": 7,
+      "P2": 5,
+      "P3": 3
+    }
+  },
+  "sla_hours": {
+    "P1": 1,
+    "P2": 4,
+    "P3": 24,
+    "P4": 72
+  },
+  "recurrence": {
+    "window_days": 30,
+    "similarity_threshold": 0.14,
+    "systemic_threshold": 3
+  },
+  "scoring": {
+    "value_points": [
+      {
+        "min": 50000,
+        "points": 8
+      },
+      {
+        "min": 5000,
+        "points": 4
+      }
+    ]
+  },
+  "rules": [
+    {
+      "id": "R01",
+      "description": "Security or data risk requires the SOC",
+      "escalate_to": "SOC Incident Response",
+      "weight": 30,
+      "mandatory": true,
+      "level": "L3",
+      "when": [
+        {
+          "field": "safety_or_data_risk",
+          "op": "==",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "R02",
+      "description": "A P1 that is half-way through its SLA needs an Incident Commander",
+      "escalate_to": "Incident Commander",
+      "weight": 25,
+      "mandatory": true,
+      "level": "L3",
+      "when": [
+        {
+          "field": "priority",
+          "op": "==",
+          "value": "P1"
+        },
+        {
+          "field": "sla_pct",
+          "op": ">=",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "id": "R03",
+      "description": "Repeating similar incidents need Problem Management",
+      "escalate_to": "Problem Management",
+      "weight": 20,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "repeat_similar_count",
+          "op": ">=",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "R04",
+      "description": "Regulated high-priority incidents need Compliance and Risk",
+      "escalate_to": "Compliance and Risk",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "regulated",
+          "op": "==",
+          "value": true
+        },
+        {
+          "field": "priority",
+          "op": "in",
+          "value": [
+            "P1",
+            "P2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R05",
+      "description": "Three or more failed fix attempts need the Engineering Manager",
+      "escalate_to": "Engineering Manager",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "prior_contacts",
+          "op": ">=",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "R06",
+      "description": "Tier-0 service with P1 or P2 needs the Head of Engineering informed",
+      "escalate_to": "Head of Engineering",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L3",
+      "when": [
+        {
+          "field": "stakeholder_tier",
+          "op": "==",
+          "value": "strategic"
+        },
+        {
+          "field": "priority",
+          "op": "in",
+          "value": [
+            "P1",
+            "P2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R07",
+      "description": "SLA breached needs the Service Delivery Manager",
+      "escalate_to": "Service Delivery Manager",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "sla_pct",
+          "op": ">=",
+          "value": 100
+        }
+      ]
+    },
+    {
+      "id": "R08",
+      "description": "Public or regulator exposure needs Communications and Legal",
+      "escalate_to": "Communications and Legal",
+      "weight": 25,
+      "mandatory": true,
+      "level": "L3",
+      "when": [
+        {
+          "field": "legal_or_media_threat",
+          "op": "==",
+          "value": true
+        }
+      ]
+    }
+  ],
+  "playbook": {
+    "restart_and_verify": {
+      "description": "Restart the failing component and verify health.",
+      "authority_level": "L1",
+      "max_value": 5000,
+      "categories": [
+        "production_outage",
+        "network_connectivity",
+        "performance_degradation"
+      ],
+      "steps": [
+        "Capture logs and metrics first",
+        "Restart or recycle the component",
+        "Verify health checks for 30 minutes"
+      ]
+    },
+    "rollback_release": {
+      "description": "Roll back the latest release.",
+      "authority_level": "L2",
+      "max_value": 50000,
+      "categories": [
+        "deployment_failure",
+        "performance_degradation",
+        "production_outage"
+      ],
+      "steps": [
+        "Confirm the release is the trigger",
+        "Roll back via the pipeline",
+        "Freeze further releases pending analysis"
+      ]
+    },
+    "scale_capacity": {
+      "description": "Scale out capacity to absorb load.",
+      "authority_level": "L1",
+      "max_value": 20000,
+      "categories": [
+        "performance_degradation",
+        "production_outage"
+      ],
+      "steps": [
+        "Add capacity or raise limits",
+        "Watch saturation metrics",
+        "Open a capacity review"
+      ]
+    },
+    "apply_hotfix": {
+      "description": "Develop and deploy a targeted hotfix.",
+      "authority_level": "L2",
+      "max_value": 100000,
+      "categories": [
+        "performance_degradation",
+        "deployment_failure",
+        "data_loss_or_corruption"
+      ],
+      "steps": [
+        "Reproduce and fix in a branch",
+        "Fast-track review and test",
+        "Deploy with a canary"
+      ]
+    },
+    "failover_to_dr": {
+      "description": "Fail over to the disaster recovery site.",
+      "authority_level": "L3",
+      "max_value": 10000000,
+      "categories": [
+        "production_outage",
+        "network_connectivity"
+      ],
+      "steps": [
+        "Declare the incident and get approval",
+        "Execute the failover runbook",
+        "Communicate status every 15 minutes"
+      ]
+    },
+    "restore_from_backup": {
+      "description": "Restore data from the latest verified backup.",
+      "authority_level": "L2",
+      "max_value": 100000,
+      "categories": [
+        "data_loss_or_corruption"
+      ],
+      "steps": [
+        "Stop writes to the affected data",
+        "Restore to a side environment and verify",
+        "Cut over and reconcile"
+      ]
+    },
+    "isolate_and_revoke_credentials": {
+      "description": "Isolate affected systems and revoke exposed credentials.",
+      "authority_level": "L2",
+      "max_value": 100000,
+      "categories": [
+        "security_incident"
+      ],
+      "steps": [
+        "Isolate hosts or accounts",
+        "Rotate secrets and revoke tokens",
+        "Start forensic collection"
+      ]
+    },
+    "fix_config_and_retest": {
+      "description": "Correct the configuration and retest.",
+      "authority_level": "L1",
+      "max_value": 5000,
+      "categories": [
+        "deployment_failure",
+        "data_loss_or_corruption",
+        "production_outage"
+      ],
+      "steps": [
+        "Diff configuration against the last good state",
+        "Correct and redeploy",
+        "Run smoke tests"
+      ]
+    },
+    "grant_access_via_approval": {
+      "description": "Grant access through the standard approval flow.",
+      "authority_level": "L1",
+      "max_value": 1000000000,
+      "categories": [
+        "access_provisioning"
+      ],
+      "steps": [
+        "Confirm the approver",
+        "Grant least-privilege access",
+        "Set an expiry and notify the user"
+      ]
+    },
+    "network_reroute": {
+      "description": "Reroute traffic around the failing network path.",
+      "authority_level": "L2",
+      "max_value": 50000,
+      "categories": [
+        "network_connectivity"
+      ],
+      "steps": [
+        "Identify the failing path",
+        "Apply the reroute",
+        "Open a ticket with the carrier"
+      ]
+    }
+  }
+}

@@ -1,0 +1,499 @@
+{
+  "domain": "project_delivery",
+  "display_name": "Project Delivery Escalation (programs and engagements)",
+  "case_noun": "delivery issue",
+  "description": "Delivery risks: schedule, scope, resources, vendors, quality, budget and stakeholder conflict.",
+  "default_team": "PMO Risk Board",
+  "severity_levels": {
+    "low": "Minor inconvenience, no financial or compliance exposure.",
+    "medium": "Noticeable impact on one stakeholder, workaround available.",
+    "high": "Significant impact, no easy workaround, or several stakeholders affected.",
+    "critical": "Severe impact, major financial, safety, security or compliance exposure."
+  },
+  "taxonomy": {
+    "categories": {
+      "schedule_slippage": {
+        "business_area": "Delivery",
+        "team": "PMO Delivery Lead",
+        "regulated": false,
+        "keywords": [
+          "delay",
+          "slip",
+          "milestone",
+          "late",
+          "date",
+          "recovery"
+        ],
+        "guidance": "High when a client milestone is at risk."
+      },
+      "scope_creep": {
+        "business_area": "Commercial",
+        "team": "Engagement Manager",
+        "regulated": false,
+        "keywords": [
+          "scope",
+          "change",
+          "additional",
+          "outside",
+          "request"
+        ],
+        "guidance": "High when work is unbilled."
+      },
+      "resource_shortage": {
+        "business_area": "Resourcing",
+        "team": "Resource Management Office",
+        "regulated": false,
+        "keywords": [
+          "resource",
+          "understaffed",
+          "left",
+          "architect",
+          "capacity",
+          "team"
+        ],
+        "guidance": "High when critical roles are vacant."
+      },
+      "vendor_delay": {
+        "business_area": "Vendor Management",
+        "team": "Procurement and Vendor Management",
+        "regulated": false,
+        "keywords": [
+          "vendor",
+          "api",
+          "third",
+          "licence",
+          "delivered",
+          "supplier"
+        ],
+        "guidance": "High when it blocks several teams."
+      },
+      "quality_defects": {
+        "business_area": "Quality",
+        "team": "Quality Assurance Head",
+        "regulated": false,
+        "keywords": [
+          "defect",
+          "bug",
+          "quality",
+          "release",
+          "root",
+          "cause"
+        ],
+        "guidance": "High when defects reach production."
+      },
+      "budget_overrun": {
+        "business_area": "Finance",
+        "team": "Portfolio Director",
+        "regulated": false,
+        "keywords": [
+          "budget",
+          "cost",
+          "overrun",
+          "forecast",
+          "funding",
+          "billed"
+        ],
+        "guidance": "High above ten percent overrun."
+      },
+      "stakeholder_conflict": {
+        "business_area": "Governance",
+        "team": "Steering Committee Sponsor",
+        "regulated": false,
+        "keywords": [
+          "stakeholder",
+          "conflict",
+          "priorities",
+          "disagree",
+          "deadlocked",
+          "trust"
+        ],
+        "guidance": "High when decisions are blocked."
+      }
+    }
+  },
+  "priority": {
+    "severity_points": {
+      "low": 1,
+      "medium": 2,
+      "high": 3,
+      "critical": 4
+    },
+    "impact_rules": [
+      {
+        "label": "strategic stakeholder",
+        "points": 2,
+        "when": [
+          {
+            "field": "stakeholder_tier",
+            "op": "==",
+            "value": "strategic"
+          }
+        ]
+      },
+      {
+        "label": "key stakeholder",
+        "points": 1,
+        "when": [
+          {
+            "field": "stakeholder_tier",
+            "op": "==",
+            "value": "key"
+          }
+        ]
+      },
+      {
+        "label": "very high value at risk",
+        "points": 2,
+        "when": [
+          {
+            "field": "value_at_risk",
+            "op": ">=",
+            "value": 1000000
+          }
+        ]
+      },
+      {
+        "label": "high value at risk",
+        "points": 1,
+        "when": [
+          {
+            "field": "value_at_risk",
+            "op": ">=",
+            "value": 100000
+          },
+          {
+            "field": "value_at_risk",
+            "op": "<",
+            "value": 1000000
+          }
+        ]
+      },
+      {
+        "label": "regulatory exposure",
+        "points": 1,
+        "when": [
+          {
+            "field": "regulated",
+            "op": "==",
+            "value": true
+          }
+        ]
+      },
+      {
+        "label": "legal or public exposure",
+        "points": 2,
+        "when": [
+          {
+            "field": "legal_or_media_threat",
+            "op": "==",
+            "value": true
+          }
+        ]
+      },
+      {
+        "label": "safety, security or data risk",
+        "points": 2,
+        "when": [
+          {
+            "field": "safety_or_data_risk",
+            "op": "==",
+            "value": true
+          }
+        ]
+      },
+      {
+        "label": "client frustration is high",
+        "points": 1,
+        "when": [
+          {
+            "field": "frustration_level",
+            "op": "==",
+            "value": "high"
+          }
+        ]
+      }
+    ],
+    "thresholds": {
+      "P1": 7,
+      "P2": 5,
+      "P3": 3
+    }
+  },
+  "sla_hours": {
+    "P1": 8,
+    "P2": 48,
+    "P3": 120,
+    "P4": 240
+  },
+  "recurrence": {
+    "window_days": 45,
+    "similarity_threshold": 0.14,
+    "systemic_threshold": 3
+  },
+  "scoring": {
+    "value_points": [
+      {
+        "min": 1000000,
+        "points": 8
+      },
+      {
+        "min": 100000,
+        "points": 4
+      }
+    ]
+  },
+  "rules": [
+    {
+      "id": "R01",
+      "description": "Contract termination or legal threat needs Engagement Director and Legal",
+      "escalate_to": "Engagement Director and Legal",
+      "weight": 30,
+      "mandatory": true,
+      "level": "L3",
+      "when": [
+        {
+          "field": "legal_or_media_threat",
+          "op": "==",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "R02",
+      "description": "Security or data risk needs Information Security",
+      "escalate_to": "Information Security",
+      "weight": 30,
+      "mandatory": true,
+      "level": "L3",
+      "when": [
+        {
+          "field": "safety_or_data_risk",
+          "op": "==",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "R03",
+      "description": "Budget overrun above 100000 needs the Portfolio Director",
+      "escalate_to": "Portfolio Director",
+      "weight": 20,
+      "mandatory": false,
+      "level": "L3",
+      "when": [
+        {
+          "field": "category",
+          "op": "==",
+          "value": "budget_overrun"
+        },
+        {
+          "field": "value_at_risk",
+          "op": ">=",
+          "value": 100000
+        }
+      ]
+    },
+    {
+      "id": "R04",
+      "description": "Repeating similar issues need the PMO Risk Board",
+      "escalate_to": "PMO Risk Board",
+      "weight": 20,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "repeat_similar_count",
+          "op": ">=",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "R05",
+      "description": "Strategic client with P1 or P2 needs the Account Executive",
+      "escalate_to": "Account Executive",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L3",
+      "when": [
+        {
+          "field": "stakeholder_tier",
+          "op": "==",
+          "value": "strategic"
+        },
+        {
+          "field": "priority",
+          "op": "in",
+          "value": [
+            "P1",
+            "P2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R06",
+      "description": "SLA breached needs the Delivery Director",
+      "escalate_to": "Delivery Director",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L3",
+      "when": [
+        {
+          "field": "sla_pct",
+          "op": ">=",
+          "value": 100
+        }
+      ]
+    },
+    {
+      "id": "R07",
+      "description": "Three or more failed recovery attempts need the Program Manager",
+      "escalate_to": "Program Manager",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "prior_contacts",
+          "op": ">=",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "R08",
+      "description": "Regulated high-priority issues need Compliance",
+      "escalate_to": "Compliance Officer",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "regulated",
+          "op": "==",
+          "value": true
+        },
+        {
+          "field": "priority",
+          "op": "in",
+          "value": [
+            "P1",
+            "P2"
+          ]
+        }
+      ]
+    }
+  ],
+  "playbook": {
+    "re_baseline_plan": {
+      "description": "Re-baseline the plan with the client.",
+      "authority_level": "L2",
+      "max_value": 1000000,
+      "categories": [
+        "schedule_slippage",
+        "vendor_delay",
+        "budget_overrun"
+      ],
+      "steps": [
+        "Reassess critical path and dependencies",
+        "Agree the new baseline with the client",
+        "Track weekly against the new plan"
+      ]
+    },
+    "add_resources_surge": {
+      "description": "Add surge resources to the critical path.",
+      "authority_level": "L2",
+      "max_value": 800000,
+      "categories": [
+        "schedule_slippage",
+        "resource_shortage"
+      ],
+      "steps": [
+        "Identify the roles and skills needed",
+        "Secure approval for surge staffing",
+        "Onboard within one week"
+      ]
+    },
+    "change_request_negotiation": {
+      "description": "Formalize and negotiate a change request.",
+      "authority_level": "L2",
+      "max_value": 500000,
+      "categories": [
+        "scope_creep",
+        "budget_overrun"
+      ],
+      "steps": [
+        "Document the extra scope and effort",
+        "Price and present a change request",
+        "Obtain sign-off before further work"
+      ]
+    },
+    "vendor_penalty_and_alternate_sourcing": {
+      "description": "Apply contractual penalties and line up alternate sourcing.",
+      "authority_level": "L3",
+      "max_value": 5000000,
+      "categories": [
+        "vendor_delay"
+      ],
+      "steps": [
+        "Review the contract remedies",
+        "Issue a formal notice to the vendor",
+        "Qualify an alternate supplier"
+      ]
+    },
+    "defect_burn_down_sprint": {
+      "description": "Dedicate a sprint to burning down critical defects.",
+      "authority_level": "L1",
+      "max_value": 200000,
+      "categories": [
+        "quality_defects"
+      ],
+      "steps": [
+        "Triage defects by severity",
+        "Allocate a dedicated sprint",
+        "Report daily burn-down to the client"
+      ]
+    },
+    "executive_sponsor_meeting": {
+      "description": "Hold an executive sponsor meeting to realign.",
+      "authority_level": "L3",
+      "max_value": 5000000,
+      "categories": [
+        "all"
+      ],
+      "steps": [
+        "Prepare a one-page situation brief",
+        "Meet the client sponsor",
+        "Agree decisions and owners"
+      ]
+    },
+    "descoping_and_phased_delivery": {
+      "description": "Descope and deliver in phases.",
+      "authority_level": "L2",
+      "max_value": 1000000,
+      "categories": [
+        "scope_creep",
+        "schedule_slippage"
+      ],
+      "steps": [
+        "Rank features by value",
+        "Agree a phased release plan",
+        "Update the contract schedule"
+      ]
+    },
+    "risk_mitigation_workshop": {
+      "description": "Run a risk mitigation workshop with stakeholders.",
+      "authority_level": "L1",
+      "max_value": 300000,
+      "categories": [
+        "all"
+      ],
+      "steps": [
+        "Invite the key stakeholders",
+        "Score risks and assign owners",
+        "Review progress in two weeks"
+      ]
+    }
+  }
+}

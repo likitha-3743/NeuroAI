@@ -1,0 +1,510 @@
+{
+  "domain": "customer_complaints",
+  "display_name": "Customer Complaint Resolution (banking and retail services)",
+  "case_noun": "complaint",
+  "description": "Customer complaints about billing, fraud, outages, lending, access, staff conduct and fees.",
+  "default_team": "Customer Relations Management",
+  "severity_levels": {
+    "low": "Minor inconvenience, no financial or compliance exposure.",
+    "medium": "Noticeable impact on one stakeholder, workaround available.",
+    "high": "Significant impact, no easy workaround, or several stakeholders affected.",
+    "critical": "Severe impact, major financial, safety, security or compliance exposure."
+  },
+  "taxonomy": {
+    "categories": {
+      "billing_error": {
+        "business_area": "Billing",
+        "team": "Billing Disputes Team",
+        "regulated": false,
+        "keywords": [
+          "charged",
+          "duplicate",
+          "refund",
+          "statement",
+          "interest",
+          "double",
+          "posted"
+        ],
+        "guidance": "High when the amount is large or already disputed once."
+      },
+      "fraud_unauthorized_transaction": {
+        "business_area": "Fraud and Security",
+        "team": "Fraud Investigation Unit",
+        "regulated": true,
+        "keywords": [
+          "unauthorised",
+          "unauthorized",
+          "fraud",
+          "phishing",
+          "cloned",
+          "takeover",
+          "unrecognised"
+        ],
+        "guidance": "At least high; critical when account takeover or large sums."
+      },
+      "service_outage": {
+        "business_area": "Digital Channels",
+        "team": "Digital Support Engineering",
+        "regulated": false,
+        "keywords": [
+          "app",
+          "login",
+          "website",
+          "down",
+          "crash",
+          "outage",
+          "update",
+          "otp"
+        ],
+        "guidance": "High when many customers are blocked from accessing money."
+      },
+      "loan_and_mortgage": {
+        "business_area": "Lending",
+        "team": "Lending Operations",
+        "regulated": true,
+        "keywords": [
+          "loan",
+          "mortgage",
+          "disbursement",
+          "application",
+          "balance",
+          "prepayment"
+        ],
+        "guidance": "High when a customer deadline or large sum is affected."
+      },
+      "account_access": {
+        "business_area": "Account Services",
+        "team": "Account Services Specialists",
+        "regulated": false,
+        "keywords": [
+          "locked",
+          "frozen",
+          "password",
+          "access",
+          "verification",
+          "reset"
+        ],
+        "guidance": "High for frozen business or salary accounts."
+      },
+      "staff_conduct": {
+        "business_area": "Branch Operations",
+        "team": "Customer Relations Management",
+        "regulated": true,
+        "keywords": [
+          "rude",
+          "employee",
+          "staff",
+          "branch",
+          "queue",
+          "privacy",
+          "consent"
+        ],
+        "guidance": "High or critical when personal data was disclosed."
+      },
+      "fees_and_charges": {
+        "business_area": "Billing",
+        "team": "Billing Disputes Team",
+        "regulated": false,
+        "keywords": [
+          "fee",
+          "penalty",
+          "overdraft",
+          "markup",
+          "annual",
+          "charge"
+        ],
+        "guidance": "Usually low or medium."
+      }
+    }
+  },
+  "priority": {
+    "severity_points": {
+      "low": 1,
+      "medium": 2,
+      "high": 3,
+      "critical": 4
+    },
+    "impact_rules": [
+      {
+        "label": "strategic stakeholder",
+        "points": 2,
+        "when": [
+          {
+            "field": "stakeholder_tier",
+            "op": "==",
+            "value": "strategic"
+          }
+        ]
+      },
+      {
+        "label": "key stakeholder",
+        "points": 1,
+        "when": [
+          {
+            "field": "stakeholder_tier",
+            "op": "==",
+            "value": "key"
+          }
+        ]
+      },
+      {
+        "label": "very high value at risk",
+        "points": 2,
+        "when": [
+          {
+            "field": "value_at_risk",
+            "op": ">=",
+            "value": 10000
+          }
+        ]
+      },
+      {
+        "label": "high value at risk",
+        "points": 1,
+        "when": [
+          {
+            "field": "value_at_risk",
+            "op": ">=",
+            "value": 1000
+          },
+          {
+            "field": "value_at_risk",
+            "op": "<",
+            "value": 10000
+          }
+        ]
+      },
+      {
+        "label": "regulatory exposure",
+        "points": 1,
+        "when": [
+          {
+            "field": "regulated",
+            "op": "==",
+            "value": true
+          }
+        ]
+      },
+      {
+        "label": "legal or public exposure",
+        "points": 2,
+        "when": [
+          {
+            "field": "legal_or_media_threat",
+            "op": "==",
+            "value": true
+          }
+        ]
+      },
+      {
+        "label": "safety, security or data risk",
+        "points": 2,
+        "when": [
+          {
+            "field": "safety_or_data_risk",
+            "op": "==",
+            "value": true
+          }
+        ]
+      },
+      {
+        "label": "customer is highly frustrated",
+        "points": 1,
+        "when": [
+          {
+            "field": "frustration_level",
+            "op": "==",
+            "value": "high"
+          }
+        ]
+      }
+    ],
+    "thresholds": {
+      "P1": 7,
+      "P2": 5,
+      "P3": 3
+    }
+  },
+  "sla_hours": {
+    "P1": 4,
+    "P2": 24,
+    "P3": 72,
+    "P4": 120
+  },
+  "recurrence": {
+    "window_days": 30,
+    "similarity_threshold": 0.14,
+    "systemic_threshold": 3
+  },
+  "scoring": {},
+  "rules": [
+    {
+      "id": "R01",
+      "description": "Legal, regulator or media threat requires Compliance and Legal",
+      "escalate_to": "Compliance and Legal",
+      "weight": 30,
+      "mandatory": true,
+      "level": "L3",
+      "when": [
+        {
+          "field": "legal_or_media_threat",
+          "op": "==",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "R02",
+      "description": "Data or security risk requires the security incident team",
+      "escalate_to": "Information Security Incident Response",
+      "weight": 30,
+      "mandatory": true,
+      "level": "L3",
+      "when": [
+        {
+          "field": "safety_or_data_risk",
+          "op": "==",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "R03",
+      "description": "Fraud above 1000 requires the Fraud Investigation Unit",
+      "escalate_to": "Fraud Investigation Unit",
+      "weight": 25,
+      "mandatory": true,
+      "level": "L2",
+      "when": [
+        {
+          "field": "category",
+          "op": "==",
+          "value": "fraud_unauthorized_transaction"
+        },
+        {
+          "field": "value_at_risk",
+          "op": ">=",
+          "value": 1000
+        }
+      ]
+    },
+    {
+      "id": "R04",
+      "description": "Regulated high-priority complaints need a compliance officer",
+      "escalate_to": "Compliance Officer",
+      "weight": 20,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "regulated",
+          "op": "==",
+          "value": true
+        },
+        {
+          "field": "priority",
+          "op": "in",
+          "value": [
+            "P1",
+            "P2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R05",
+      "description": "Three or more prior contacts means front line failed repeatedly",
+      "escalate_to": "Customer Relations Management",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "prior_contacts",
+          "op": ">=",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "R06",
+      "description": "Strategic customer with P1 or P2 needs a relationship owner",
+      "escalate_to": "Relationship Director",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "stakeholder_tier",
+          "op": "==",
+          "value": "strategic"
+        },
+        {
+          "field": "priority",
+          "op": "in",
+          "value": [
+            "P1",
+            "P2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R07",
+      "description": "SLA already breached needs service quality oversight",
+      "escalate_to": "Service Quality Manager",
+      "weight": 15,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "sla_pct",
+          "op": ">=",
+          "value": 100
+        }
+      ]
+    },
+    {
+      "id": "R08",
+      "description": "Recurring similar complaints indicate a systemic issue",
+      "escalate_to": "Problem Management",
+      "weight": 20,
+      "mandatory": false,
+      "level": "L2",
+      "when": [
+        {
+          "field": "repeat_similar_count",
+          "op": ">=",
+          "value": 3
+        }
+      ]
+    }
+  ],
+  "playbook": {
+    "apology_and_goodwill_credit": {
+      "description": "Apologize and give a small goodwill credit.",
+      "authority_level": "L1",
+      "max_value": 100,
+      "categories": [
+        "all"
+      ],
+      "steps": [
+        "Acknowledge the problem in writing",
+        "Apply the goodwill credit",
+        "Confirm closure with the customer"
+      ]
+    },
+    "fee_reversal_and_refund": {
+      "description": "Reverse the incorrect fee or charge and refund the customer.",
+      "authority_level": "L1",
+      "max_value": 500,
+      "categories": [
+        "billing_error",
+        "fees_and_charges"
+      ],
+      "steps": [
+        "Verify the charge against the statement",
+        "Reverse and refund within 2 working days",
+        "Send written confirmation"
+      ]
+    },
+    "correct_record_and_reissue": {
+      "description": "Correct the account or loan record and reissue the statement.",
+      "authority_level": "L1",
+      "max_value": 2000,
+      "categories": [
+        "billing_error",
+        "loan_and_mortgage",
+        "account_access"
+      ],
+      "steps": [
+        "Locate the incorrect entry",
+        "Correct it with a four-eyes check",
+        "Reissue the statement and confirm"
+      ]
+    },
+    "temporary_credit_pending_investigation": {
+      "description": "Give a temporary credit while the dispute is investigated.",
+      "authority_level": "L2",
+      "max_value": 10000,
+      "categories": [
+        "fraud_unauthorized_transaction",
+        "billing_error"
+      ],
+      "steps": [
+        "Approve temporary credit",
+        "Open an investigation case",
+        "Update the customer every 48 hours"
+      ]
+    },
+    "block_secure_and_reissue": {
+      "description": "Block compromised credentials, secure the account and reissue the card.",
+      "authority_level": "L1",
+      "max_value": 100000,
+      "categories": [
+        "fraud_unauthorized_transaction",
+        "account_access"
+      ],
+      "steps": [
+        "Block the card or session immediately",
+        "Reset credentials and review recent activity",
+        "Reissue and educate the customer"
+      ]
+    },
+    "technical_workaround_and_followup": {
+      "description": "Provide a technical workaround and follow up after the fix.",
+      "authority_level": "L1",
+      "max_value": 1000000000,
+      "categories": [
+        "service_outage",
+        "account_access"
+      ],
+      "steps": [
+        "Share the workaround steps",
+        "Log the case against the open incident",
+        "Call back when the fix is released"
+      ]
+    },
+    "manager_callback_and_service_recovery": {
+      "description": "Manager calls the customer and runs a service recovery plan.",
+      "authority_level": "L2",
+      "max_value": 5000,
+      "categories": [
+        "all"
+      ],
+      "steps": [
+        "Manager reviews the full history",
+        "Call the customer with a clear plan",
+        "Agree follow-up dates"
+      ]
+    },
+    "compensation_package": {
+      "description": "Offer a negotiated compensation package.",
+      "authority_level": "L3",
+      "max_value": 50000,
+      "categories": [
+        "all"
+      ],
+      "steps": [
+        "Quantify the customer's loss",
+        "Obtain approval from management",
+        "Offer, document and close"
+      ]
+    },
+    "process_exception_approval": {
+      "description": "Approve a one-off process exception.",
+      "authority_level": "L2",
+      "max_value": 20000,
+      "categories": [
+        "loan_and_mortgage",
+        "fees_and_charges",
+        "account_access"
+      ],
+      "steps": [
+        "Document the business justification",
+        "Obtain exception approval",
+        "Apply and record the exception"
+      ]
+    }
+  }
+}
