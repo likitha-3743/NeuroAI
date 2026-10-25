@@ -24,13 +24,7 @@
     "llm_config": {
         "class": "gemini",
         "model_name": "gemini-3.5-flash-lite",
-        "temperature": 0.2,
-        "fallbacks": [
-            {
-                "class": "gemini",
-                "model_name": "gemini-3.6-flash"
-            }
-        ]
+        "temperature": 0.2
     },
 
     # Free-tier rate limits cause 429s; retry more and allow more wall-clock time.

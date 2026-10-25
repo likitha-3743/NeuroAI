@@ -1,0 +1,2 @@
+A key customer cannot log in to our mobile banking app since the latest update and the OTP never arrives. This is their third contact and they are very upset. The complaint is 20 hours old.
+Production incident: the checkout API is slow and timing out since the new deployment. It is a tier-0 service losing about 30000 dollars per hour, open for 2 hours, and we already scaled up once without success.

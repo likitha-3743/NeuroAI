@@ -5,7 +5,7 @@ venv3/
 .venv/
 
 .env
-
+nss_local.db
 # UV lock file
 uv.lock
 
